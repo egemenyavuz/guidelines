@@ -7,16 +7,15 @@ The Docker images are built and deployed to
 or
  - https://hub.docker.com/r/[contributer]/ , when it is a contributers repo
 
-## Requirements
+## Requirements for repositories
 
 - The extension require a LICENSE file that makes this process legal
 - The extension should be usable from within Sesam
 - The extension should be reusable
 - The README file should contain an example
+- The CI&CD should be implemented as described below
 
-## Fork and build
-
-All the extensions are ready up to be built with [Travis CI](http://travis-ci.org/).
+## How to contribute?
 
 You can contribute either
  - by forking an existing repo or
@@ -25,11 +24,12 @@ You can contribute either
 Steps to build your own fork:
 * Sign up at Dockerhub if you don't have an account
 * Prepare your repo & branch
-* Sign up to Travis CI with your Github account
-* Enable the forked repository inside Travis CI
-* Add your DOCKER_USERNAME and DOCKER_PASSWORD as environment variables for the build inside Travis CI
-* Travis CI will build and deploy once you create a new release tag in your repository.
+* Add git action 'Sesam Community CI&CD Workflow'
+  * Add your DOCKER_USERNAME and DOCKER_PASSWORD as secrets to your git repository(Settings>Secrets)
+  * The CI&CD workflow will build docker image for all push-to-master, releases and PRs. The image will be pushed to dockerhub with tag 'development' if it is a push-to-master and with the release tag when it is a release.
 * Share your improvements using Pull Requests
+
+
 
 ## FAQ
 
