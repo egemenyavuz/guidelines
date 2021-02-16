@@ -21,15 +21,15 @@ You can contribute either
  - by forking an existing repo or
  - if it is a new repo, by contacting a community member to get your repo forked into sesam-community
 
-Steps to build your own fork:
+## How to setup?
+
+Steps to build your own setup:
 * Sign up at Dockerhub if you don't have an account
 * Prepare your repo & branch
 * Add git action 'Sesam Community CI&CD Workflow'
   * Add your DOCKER_USERNAME and DOCKER_PASSWORD as secrets to your git repository(Settings>Secrets)
   * The CI&CD workflow will build docker image for all push-to-master, releases and PRs. The image will be pushed to dockerhub with tag 'development' if it is a push-to-master and with the release tag when it is a release.
-* Share your improvements using Pull Requests
-
-
+* Share your improvements using Pull Requests 
 
 ## FAQ
 
