@@ -23,7 +23,7 @@ docker build --label Commit="${GITHUB_SHA}" --label BuildNumber="${GITHUB_RUN_NU
 #push to dockerhub if tagged or pushed to master
 if  [ "${GITHUB_REF:0:10}" = "refs/tags/" ] || [ "${GITHUB_REF}" = "refs/heads/master" ]
 then
-  echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin  
+  #echo "${DOCKER_PASSWORD}" | docker login --username "${DOCKER_USERNAME}" --password-stdin  
   cat /home/runner/.docker/config.json
   docker push ${DOCKER_USERNAME}/${_REPO_NAME}:${_DOCKER_REPO_TAG}
   docker logout
