@@ -9,14 +9,14 @@ set -e
 _REPO="${GITHUB_REPO}"
 _DEFAULT_REPO_NAME="${_REPO/#*\//}"
 _REPO_NAME="${DOCKER_REPO_NAME:-$_DEFAULT_REPO_NAME}"
-_DOCKER_ID_PUSH="${DOCKER_ID_PUSH:-$DOCKER_ID_LOGIN}"
+_DOCKER_ID_FORPUSH="${DOCKER_ID_FORPUSH:-$DOCKER_ID}"
 
 _DOCKER_REPO_TAG="development"
 if  [ "${GITHUB_REF:0:10}" = "refs/tags/" ]
 then
   _DOCKER_REPO_TAG="${GITHUB_REF:10}"
 fi
-echo "Docker image is set to'${_DOCKER_ID_PUSH}/${_REPO_NAME}:${_DOCKER_REPO_TAG}'"
+echo "Docker image is set to'${_DOCKER_ID_FORPUSH}/${_REPO_NAME}:${_DOCKER_REPO_TAG}'"
 
 
 #build docker image
@@ -25,13 +25,13 @@ docker image build --label Commit="${GITHUB_SHA}" --label BuildNumber="${GITHUB_
 #push to dockerhub if tagged or pushed to master
 if  [ "${GITHUB_REF:0:10}" = "refs/tags/" ] || [ "${GITHUB_REF}" = "refs/heads/master" ]
 then
-  if [ -z "${_DOCKER_ID_PUSH}" ]
+  if [ -z "${_DOCKER_ID_FORPUSH}" ]
   then
-    echo "Neither DOCKER_ID_PUSH nor DOCKER_ID_LOGIN is set.Cannot push to docker registry!"
+    echo "Neither DOCKER_ID_FORPUSH nor DOCKER_ID is set.Cannot push to docker registry!"
     exit 1
   fi
-  docker image tag ${_REPO_NAME}:${_DOCKER_REPO_TAG} ${_DOCKER_ID_PUSH}/${_REPO_NAME}:${_DOCKER_REPO_TAG}
-  docker image push ${_DOCKER_ID_PUSH}/${_REPO_NAME}:${_DOCKER_REPO_TAG}
+  docker image tag ${_REPO_NAME}:${_DOCKER_REPO_TAG} ${_DOCKER_ID_FORPUSH}/${_REPO_NAME}:${_DOCKER_REPO_TAG}
+  docker image push ${_DOCKER_ID_FORPUSH}/${_REPO_NAME}:${_DOCKER_REPO_TAG}
   docker logout
 else
   echo "Skipping docker-push as per the logic"
