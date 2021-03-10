@@ -1,6 +1,7 @@
 #!/bin/bash
 ## Deploys the master branch and any tags of a sesam-community or a contributer project to dockerhub.
-## Requires following ENVVARS: GITHUB_REPO, GITHUB_BASE_REF, GITHUB_REF, GITHUB_SHA, GITHUB_RUN_NUMBER, DOCKER_USERNAME, DOCKER_PASSWORD
+## Requires following ENVVARS: GITHUB_REPO, GITHUB_BASE_REF, GITHUB_REF, GITHUB_SHA, GITHUB_RUN_NUMBER, DOCKER_USERNAME
+## Supports  optional ENVVARS: DOCKER_REPO_NAME, DOCKER_ORGNAME
 
 # make the build fail on any commands
 set -v
@@ -9,7 +10,7 @@ set -e
 _REPO="${GITHUB_REPO}"
 _DEFAULT_REPO_NAME="${_REPO/#*\//}"
 _REPO_NAME="${DOCKER_REPO_NAME:-$_DEFAULT_REPO_NAME}"
-_DOCKER_ID_FORPUSH="${DOCKER_ID_FORPUSH:-$DOCKER_ID}"
+_DOCKER_ID_FORPUSH="${DOCKER_ORGNAME:-$DOCKER_USERNAME}"
 
 _DOCKER_REPO_TAG="development"
 if  [ "${GITHUB_REF:0:10}" = "refs/tags/" ]
@@ -27,7 +28,7 @@ if  [ "${GITHUB_REF:0:10}" = "refs/tags/" ] || [ "${GITHUB_REF}" = "refs/heads/m
 then
   if [ -z "${_DOCKER_ID_FORPUSH}" ]
   then
-    echo "Neither DOCKER_ID_FORPUSH nor DOCKER_ID is set.Cannot push to docker registry!"
+    echo "Neither DOCKER_ORGNAME nor DOCKER_USERNAME is set.Cannot push to docker registry!"
     exit 1
   fi
   docker image tag ${_REPO_NAME}:${_DOCKER_REPO_TAG} ${_DOCKER_ID_FORPUSH}/${_REPO_NAME}:${_DOCKER_REPO_TAG}
